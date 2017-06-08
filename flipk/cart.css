@@ -1,0 +1,81 @@
+#cartContainer {
+    width: 600px;
+    position: relative;
+    border: 1px solid black;
+    min-height: 350px;
+    padding: 10px;
+}
+
+.table-row {
+    clear: both;
+}
+
+.table-cell {
+    float: left;
+    width: 16.33%;
+    border: 1px solid black;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+}
+
+.button {
+    padding: 5px;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #2075bc;
+    border-radius: 5px;
+    color: white;
+    background-color: #2075bc;
+    text-align: center;
+    cursor: pointer;
+}
+
+.remove {
+    color: white;
+    position: absolute;
+    background: red;
+    border-radius: 15px;
+    height: 15px;
+    width: 15px;
+    top: 6px;
+    left: 5px;
+    font-size: 22px;
+    line-height: 13px;
+    cursor: pointer;
+}
+
+.table {
+    margin: 20px 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.bottom-section {
+    overflow: hidden;
+    margin: 20px 10px;
+    width: 100%;
+    clear: both;
+}
+
+.bottom-col {
+    float: left;
+    width: 50%;
+}
+
+.proceed {
+    float: right;
+}
+
+.proceed:after {
+    content: "";
+    clear: both;
+}
+
+#cart2, #cart1 {
+    clear: both;
+    margin-top: 20px;
+    overflow: hidden;
+}

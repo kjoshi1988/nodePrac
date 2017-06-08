@@ -1,0 +1,181 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            font-size: 14px;
+            position: relative;
+            font-family: arial, helvetica, serif;
+        }
+
+        .row {
+            border: 1px solid #cccccc;
+            border-top: none;
+            clear: both;
+            float: left;
+        }
+
+        .row:first-child {
+            border: 1px solid #cccccc;
+        }
+
+        .col {
+            float: left;
+            height: 50px;
+            width: 50px;
+            border-right: 1px solid #cccccc;
+            font-size: 30px;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .col:last-child {
+            border-right: none;
+        }
+
+        #container {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+    <script src="../../flipk/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        function startTicTacToe(e) {
+            var gridSize = parseInt(this.rowCount.value);
+            var gridBox = document.getElementById("gridBox"), rowEle, colEle, cellList = [];
+            for (var row = 0; row < gridSize; row++) {
+                rowEle = document.createElement("div");
+                rowEle.className = "row row-" + row;
+                rowEle.id = "row-" + row;
+                for (var col = 0; col < gridSize; col++) {
+                    colEle = document.createElement("div");
+                    colEle.className = "col col-" + col;
+                    colEle.id = "cell-" + (row * gridSize + col);
+                    colEle.setAttribute("data-index", (row * gridSize + col));
+                    cellList.push(colEle);
+                    rowEle.appendChild(colEle);
+                }
+                gridBox.appendChild(rowEle);
+            }
+            this.style.display = "none";
+            $(gridBox).on("click", ".col", function () {
+                if (this._val) {
+                    alert("already selected");
+                } else {
+                    var index = cellList.indexOf(this);
+                    this._val = 1;
+                    this.innerHTML = "X";
+                    cellList.splice(index, 1);
+                    if (checkIfWon(this, parseInt(this.getAttribute("data-index")), gridSize)) {
+                        return setTimeout(function () {
+                            alert("Won!!");
+                        }, 0);
+                    }
+                    if (cellList.length !== 0) {
+                        botTurn(cellList);
+                    }
+                }
+            });
+            e.preventDefault();
+            return false;
+        }
+
+        function botTurn(cellList) {
+            var rand = (Math.random() * 100) % cellList.length;
+            var ele = cellList.splice(rand, 1)[0];
+            ele._val = -1;
+            ele.innerHTML = "O";
+        }
+
+        function checkIfWon(cell, index, gridSize) {
+            if ((checkColSum(cell, index, gridSize) + 1) === gridSize) {
+                return true;
+            }
+            if ((checkRowSum(cell, index, gridSize) + 1) === gridSize) {
+                return true;
+            }
+            if ((checkDiagonalSum(cell, index, gridSize) + 1) === gridSize) {
+                return true;
+            }
+            return false;
+        }
+
+        function checkColSum(cell, index, gridSize) {
+            var currentCol = index % gridSize;
+            var sum = 0;
+            var prevParentSibling = cell.parentNode.previousElementSibling;
+            var nextParentSibling = cell.parentNode.nextElementSibling;
+            while (prevParentSibling) {
+                if (prevParentSibling.children[currentCol]._val) {
+                    sum += prevParentSibling.children[currentCol]._val;
+                }
+                prevParentSibling = prevParentSibling.previousElementSibling;
+            }
+            while (nextParentSibling) {
+                if (nextParentSibling.children[currentCol]._val) {
+                    sum += nextParentSibling.children[currentCol]._val;
+                }
+                nextParentSibling = nextParentSibling.nextElementSibling;
+            }
+            return sum;
+        }
+
+        function checkRowSum(cell, index, gridSize) {
+            var sum = 0;
+            var prevSibling = cell.previousElementSibling;
+            var nextSibling = cell.nextElementSibling;
+            while (prevSibling) {
+                if (prevSibling._val) {
+                    sum += prevSibling._val;
+                }
+                prevSibling = prevSibling.previousElementSibling;
+            }
+            while (nextSibling) {
+                if (nextSibling._val) {
+                    sum += nextSibling._val;
+                }
+                nextSibling = nextSibling.nextElementSibling;
+            }
+            return sum;
+        }
+
+        function checkDiagonalSum(cell, index, gridSize) {
+            var currentCol = index % gridSize, sum = 0, currentRow = Math.floor(index / gridSize);
+            if(currentCol === currentRow){
+                var prevParentSibling = cell.parentNode.previousElementSibling;
+                var nextParentSibling = cell.parentNode.nextElementSibling;
+                var prevCol, nextCol;
+                prevCol = nextCol = currentCol;
+                while (prevParentSibling) {
+                    if (prevParentSibling.children[--prevCol]._val) {
+                        sum += prevParentSibling.children[prevCol]._val;
+                    }
+                    prevParentSibling = prevParentSibling.previousElementSibling;
+                }
+                while (nextParentSibling) {
+                    if (nextParentSibling.children[++nextCol]._val) {
+                        sum += nextParentSibling.children[nextCol]._val;
+                    }
+                    nextParentSibling = nextParentSibling.nextElementSibling;
+                }
+            }
+            return sum;
+        }
+    </script>
+</head>
+<body>
+<div id="container">
+
+    <form id="gridForm" onsubmit="return startTicTacToe.call(this, event)">
+        <label> <input name="rowCount" type="text" placeholder="Enter mXm grid value"/> </label>
+        <input type="submit" value="Render Grid">
+    </form>
+
+    <div id="gridBox">
+
+    </div>
+</div>
+
+</body>
+</html>

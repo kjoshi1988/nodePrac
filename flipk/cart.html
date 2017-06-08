@@ -1,0 +1,62 @@
+<html>
+<head>
+    <link href="cart.css" rel="stylesheet" type="text/css"/>
+    <script src="cartApi.js"> </script>
+</head>
+<body>
+<div id="cartContainer">
+    <div class="header">
+        <div class="button" onclick="addCustomProduct();">Add Product</div>
+        <div id="cart1">
+
+        </div>
+        <div id="cart2">
+
+        </div>
+    </div>
+</div>
+<script>
+    var cartData = {
+        products: [
+            {name: "A", qty: 1, price: "100", discount: "10"},
+            {name: "B", qty: 2, price: "100", discount: "10"},
+            {name: "C", qty: 1, price: "100", discount: "10"},
+            {name: "D", qty: 1, price: "100", discount: "10"}
+        ],
+        currency: "$",
+        billingAddress: "XY-24, Rajapuri road, banglore"
+    };
+    var cartData2 = {
+        products: [
+            {name: "X", qty: 1, price: "200", discount: "10"},
+            {name: "Y", qty: 2, price: "300", discount: "10"},
+            {name: "Z", qty: 1, price: "100", discount: "10"},
+            {name: "W", qty: 1, price: "100", discount: "10"}
+        ],
+        currency: "Rup",
+        billingAddress: "XY-24, Rajapuri road, banglore"
+    };
+    var cart = document.getElementById("cart1");
+    var cart2 = document.getElementById("cart2");
+    var cartApi1 = API.init(cart, {
+        fetchData: function () {
+            return cartData
+        }
+    });
+    var cartApi2 = API.init(cart2, {
+        fetchData: function () {
+            return cartData2
+        }
+    });
+
+    function addCustomProduct() {
+        cartApi1.addProduct({
+            name: String.fromCodePoint(Math.floor(Math.random() * 100) % 26 + 65),
+            qty: 1,
+            price: "100",
+            discount: "10"
+        });
+    }
+</script>
+</body>
+</html>

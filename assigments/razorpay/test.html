@@ -1,0 +1,21 @@
+<html>
+<body>
+<div id="container">
+    <p class="abc" id="1" data-test="5">asdasdasd</p>
+</div>
+<button id="myButton">Click Me!!</button>
+<script type="text/javascript">
+    (function () {
+        var div = document.getElementById("container");
+        var button = document.getElementById("myButton");
+        button.onclick = function () {
+            div.appendChild(getClonedObject(div.children[div.children.length - 1]));
+        };
+
+        function getClonedObject(ele) {
+            return ele.cloneNode(true);
+        }
+    })();
+</script>
+</body>
+</html>
